@@ -11,7 +11,7 @@
       "cwd": "/home/tron/Documentos/JogoDaMemoria",
       "program": "/home/tron/Documentos/JogoDaMemoria/build/Debug/outDebug",
       "MIMode": "gdb",
-      "miDebuggerPath": "/usr/bin/gdb",
+      "miDebuggerPath": "gdb",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",

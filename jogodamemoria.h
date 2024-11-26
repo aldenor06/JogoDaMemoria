@@ -33,18 +33,12 @@ public:
 protected:
     void initializeGL();
     void resizeGL(int width, int height);
-<<<<<<< HEAD
-    void exibeTexto();
-    void DesenhaIgual(float x_init, float y_init);
-    void DesenhaLosangulo(float x_init, float y_init);
-=======
     void paintGL();
     void keyPressEvent(QKeyEvent *event);
     void changeEvent(QEvent *event);
     void mousePressEvent(QMouseEvent *event);
     void screenToOpenGL(int screenX, int screenY, float &glX, float &glY);
     void DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta);
->>>>>>> mousefunction
     void DesenhaCubo(float x_init, float y_init);
     void DesenhaTriangulo(float x_init, float y_init);
     void DesenhaIgual(float x_init, float y_init);

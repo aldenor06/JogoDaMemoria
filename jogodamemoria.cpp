@@ -6,23 +6,17 @@
 #include <QTimer>
 #include <QPushButton>
 
-GLint cartaSelecionada = 6; 
+GLint cartaSelecionada = 6;
 void comparaCarta();
 void inicializarCartas();
 carta cartas[8];
 int contAcertos = 0;
-<<<<<<< HEAD
 int cartaA = -1;
 int cartaB = -1;
 int cartaE = -1;
-=======
-int cartaA = -1; 
-int cartaB = -1; 
-int cartaE = -1; 
->>>>>>> mousefunction
 GLfloat aspecto, up = 0, escala = 1;
 GLint largura, altura, ang = 0;
-bool girar = false;    
+bool girar = false;
 
 JogoDaMemoria::JogoDaMemoria()
 {
@@ -43,19 +37,13 @@ JogoDaMemoria::~JogoDaMemoria() {}
 
 void JogoDaMemoria::initializeGL()
 {
-<<<<<<< HEAD
-    view_w = 800;
-    view_h = 600;
-    glShadeModel(GL_SMOOTH); // Enable smooth shading
-=======
     glShadeModel(GL_SMOOTH);
->>>>>>> mousefunction
     qglClearColor(Qt::white);
-    glClearDepth(1.0f);                              
-    glClearStencil(0);                                 
-    glEnable(GL_DEPTH_TEST);                          
-    glDepthFunc(GL_LEQUAL);                           
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);                                                
+    glClearDepth(1.0f);
+    glClearStencil(0);
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LEQUAL);
+    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     glEnable(GL_TEXTURE_2D);
     QImage imgFundo = convertToGLFormat(QImage("fundo2.jpg"));
     QImage imgFrente = convertToGLFormat(QImage("frente2.jpg"));
@@ -94,132 +82,23 @@ void JogoDaMemoria::initializeGL()
     glEnable(GL_DEPTH_TEST);
 }
 
-<<<<<<< HEAD
 void JogoDaMemoria::resizeGL(int width, int height)
 {
-=======
-void JogoDaMemoria::resizeGL(int width, int height){
->>>>>>> mousefunction
     if (height == 0)
         height = 1;
     view_w = width;
     view_h = height;
     glViewport(0, 0, view_w, view_h);
     glMatrixMode(GL_PROJECTION);
-<<<<<<< HEAD
     glLoadIdentity();
     gluPerspective(8.f, static_cast<GLfloat>(width) / height, 5.f, 250.0f);
-=======
-    glLoadIdentity(); 
-    gluPerspective(8.f, static_cast<GLfloat>(width) / height, 5.f, 250.0f); 
->>>>>>> mousefunction
     gluLookAt(0.f, -0.5f, 15.f, 0, 0, 0, 0, 1, 0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-<<<<<<< HEAD
-void JogoDaMemoria::exibeTexto()
+void JogoDaMemoria::paintGL()
 {
-    label->setFrameStyle((QFrame::Panel | QFrame::Sunken));
-    label->setAutoFillBackground(true);
-    label->setAlignment((Qt::AlignCenter));
-    label->move(view_w / 4, view_h / 2);
-    label->resize(800, 200);
-    label->setStyleSheet("QLabel { background-color :#37374e; color : blue; font:50px }");
-    label->setText("Parabéns, você ganhou!!");
-    button->setStyleSheet("QPushButton {background-color:#d91a27;font:bold;font-size:13px;}");
-    button->move(260, 150);
-    button->resize(80, 50);
-    label->show();
-    close();
-}
-
-void JogoDaMemoria::DesenhaIgual(float x_init, float y_init)
-{
-    x_init = x_init + x_carta / 5;
-    y_init = y_init + y_carta / 4;
-    float x_end = x_init + 3 * x_carta / 5;
-    float y_end = y_init + 2 * y_carta / 4;
-
-    glColor3f(0, 0, 0);
-    glBegin(GL_QUADS);
-    glVertex3f(x_init, y_init, -0.01);
-    glVertex3f(x_end, y_init, -0.01);
-    glVertex3f(x_end, y_init + 1.5 * y_carta / 8, -0.01);
-    glVertex3f(x_init, y_init + 1.5 * y_carta / 8, -0.01);
-
-    glVertex3f(x_init, y_init + 2.5 * y_carta / 8, -0.01);
-    glVertex3f(x_end, y_init + 2.5 * y_carta / 8, -0.01);
-    glVertex3f(x_end, y_end, -0.01);
-    glVertex3f(x_init, y_end, -0.01);
-    glEnd();
-}
-
-void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init)
-{
-
-    x_init = x_init + x_carta / 5;
-    y_init = y_init + y_carta / 4;
-    float x_end = x_init + 3 * x_carta / 5;
-    float y_end = y_init + 2 * y_carta / 4;
-
-    glColor3f(212, 37, 37);
-    glBegin(GL_QUADS);
-    glVertex3f(x_init, (y_init + y_end) / 2, -0.01);
-    glVertex3f((x_init + x_end) / 2, y_init, -0.01);
-    glVertex3f(x_end, (y_init + y_end) / 2, -0.01);
-    glVertex3f((x_init + x_end) / 2, y_end, -0.01);
-    glEnd();
-}
-
-void JogoDaMemoria::DesenhaCubo(float x_init, float y_init)
-{
-    x_init = x_init + x_carta / 5;
-    y_init = y_init + y_carta / 4;
-    float x_end = x_init + 3 * x_carta / 5;
-    float y_end = y_init + 2 * y_carta / 4;
-
-    glColor3f(0, 0, 0);
-    glBegin(GL_QUADS);
-    glVertex3f(x_init, y_init, -0.01);
-    glVertex3f(x_end, y_init, -0.01);
-    glVertex3f(x_end, y_end, -0.01);
-    glVertex3f(x_init, y_end, -0.01);
-    glEnd();
-}
-
-void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init)
-{
-    x_init = x_init + x_carta / 5;
-    y_init = y_init + y_carta / 4;
-    float x_end = x_init + 3 * x_carta / 5;
-    float y_end = y_init + 2 * y_carta / 4;
-
-    glColor3f(1, 0, 0);
-    glBegin(GL_POLYGON);
-    glVertex3f(x_end / 2 + x_init / 2, y_init, -0.01);
-    glVertex3f(x_end, y_end, -0.01);
-    glVertex3f(x_init, y_end, -0.01);
-    glEnd();
-}
-
-void JogoDaMemoria::desenhaBackground()
-{
-    glColor3f(0.7, 0.7, 0.7);
-    glBindTexture(GL_TEXTURE_2D, _backgroundTexture);
-    glBegin(GL_QUADS);
-    glTexCoord2f(0.0f, 1.0f);
-    glVertex3f(-2, -2, -0.5);
-    glTexCoord2f(1.0f, 1.0f);
-    glVertex3f(-2, 2, -0.5);
-    glTexCoord2f(1.0f, 0.0f);
-    glVertex3f(2, 2, -0.5);
-    glTexCoord2f(0.0f, 0.0f);
-    glVertex3f(2, -2, -0.5);
-    glEnd();
-=======
-void JogoDaMemoria::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     desenhaBackground();
@@ -227,7 +106,6 @@ void JogoDaMemoria::paintGL(){
     {
         DesenhaCarta(i == cartaSelecionada, -0.7 + 0.38 * (i % 4), i < 4 ? 0.8 : -0.14, cartas[i]);
     }
->>>>>>> mousefunction
 }
 
 void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta)
@@ -336,18 +214,8 @@ void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, c
     }
 }
 
-<<<<<<< HEAD
-void JogoDaMemoria::paintGL()
+void JogoDaMemoria::exibeTexto()
 {
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glMatrixMode(GL_MODELVIEW);
-    desenhaBackground();
-    for (int i = 0; i < 8; i++)
-    {
-        DesenhaCarta(i == cartaSelecionada, -0.7 + 0.38 * (i % 4), i < 4 ? 0.8 : -0.14, cartas[i]);
-    }
-=======
-void JogoDaMemoria::exibeTexto(){
     label->setFrameStyle((QFrame::Panel | QFrame::Sunken));
     label->setAutoFillBackground(true);
     label->setAlignment((Qt::AlignCenter));
@@ -362,7 +230,8 @@ void JogoDaMemoria::exibeTexto(){
     close();
 }
 
-void JogoDaMemoria::DesenhaCubo(float x_init, float y_init){
+void JogoDaMemoria::DesenhaCubo(float x_init, float y_init)
+{
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
     float x_end = x_init + 3 * x_carta / 5;
@@ -377,7 +246,8 @@ void JogoDaMemoria::DesenhaCubo(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init){
+void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init)
+{
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
     float x_end = x_init + 3 * x_carta / 5;
@@ -390,7 +260,8 @@ void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init){
     glVertex3f(x_init, y_end, -0.01);
     glEnd();
 }
-void JogoDaMemoria::DesenhaIgual(float x_init, float y_init){
+void JogoDaMemoria::DesenhaIgual(float x_init, float y_init)
+{
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
     float x_end = x_init + 3 * x_carta / 5;
@@ -410,7 +281,8 @@ void JogoDaMemoria::DesenhaIgual(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init){
+void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init)
+{
 
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
@@ -426,7 +298,8 @@ void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::desenhaBackground(){
+void JogoDaMemoria::desenhaBackground()
+{
     glColor3f(0.7, 0.7, 0.7);
     glBindTexture(GL_TEXTURE_2D, _backgroundTexture);
     glBegin(GL_QUADS);
@@ -439,7 +312,6 @@ void JogoDaMemoria::desenhaBackground(){
     glTexCoord2f(0.0f, 0.0f);
     glVertex3f(2, -2, -0.5);
     glEnd();
->>>>>>> mousefunction
 }
 
 void resetarCarta(int indiceCarta)
@@ -471,15 +343,14 @@ void comparaCarta()
     }
 }
 
-
 int JogoDaMemoria::getCartaIndex(int x, int y)
 {
     float normalizedX = (2.0f * x) / width() - 1.0f;
     float normalizedY = 1.0f - (2.0f * y) / height();
-    float cartaWidth = 0.38f;  
-    float cartaHeight = 0.94f; 
-    float startX = -0.7f;      
-    float startY = 0.8f;       
+    float cartaWidth = 0.38f;
+    float cartaHeight = 0.94f;
+    float startX = -0.7f;
+    float startY = 0.8f;
     int linha = -1;
     if (normalizedY >= startY - cartaHeight && normalizedY <= startY)
     {
@@ -490,7 +361,7 @@ int JogoDaMemoria::getCartaIndex(int x, int y)
         linha = 1;
     }
     int coluna = -1;
-    float adjustedX = normalizedX; 
+    float adjustedX = normalizedX;
     for (int i = 0; i < 4; i++)
     {
         float cardLeft = startX + (i * cartaWidth);
@@ -503,19 +374,18 @@ int JogoDaMemoria::getCartaIndex(int x, int y)
         }
     }
 
-
     if (linha == -1 || coluna == -1)
     {
         return -1;
     }
-
 
     return linha * 4 + coluna;
 }
 
 void JogoDaMemoria::mousePressEvent(QMouseEvent *event)
 {
-    if (!jogavel) return;
+    if (!jogavel)
+        return;
 
     if (contAcertos == (sizeof(cartas) / sizeof(cartas[0])) / 2)
     {
@@ -542,7 +412,8 @@ void JogoDaMemoria::mousePressEvent(QMouseEvent *event)
 
                 jogavel = false;
 
-                timerReset->singleShot(2000, this, [=]() {
+                timerReset->singleShot(2000, this, [=]()
+                                       {
                     if (cartas[cartaA].figura != cartas[cartaB].figura)
                     {
                         resetarCarta(cartaA);
@@ -555,8 +426,7 @@ void JogoDaMemoria::mousePressEvent(QMouseEvent *event)
                     cartaA = -1;
                     cartaB = -1;
                     jogavel = true; 
-                    updateGL(); 
-                });
+                    updateGL(); });
             }
 
             updateGL();
@@ -569,10 +439,10 @@ void JogoDaMemoria::keyPressEvent(QKeyEvent *event)
     switch (event->key())
     {
     case Qt::Key_Escape:
-        close(); 
+        close();
         break;
     default:
-        QGLWidget::keyPressEvent(event); 
+        QGLWidget::keyPressEvent(event);
     }
 }
 

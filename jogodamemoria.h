@@ -34,6 +34,12 @@ protected:
     void resizeGL(int width, int height);
     void DesenhaIgual(float x_init, float y_init);
     void DesenhaLosangulo(float x_init, float y_init);
+    void DesenhaCubo(float x_init, float y_init);
+    void DesenhaTriangulo(float x_init, float y_init);
+    void DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta);
+    void paintGL();
+    void desenhaBackground();
+    
 private:
     QTimer *timer;
     QTimer *timerReset;

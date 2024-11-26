@@ -118,3 +118,162 @@ void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init){
     glVertex3f((x_init + x_end) / 2, y_end, -0.01);
     glEnd();
 }
+
+void JogoDaMemoria::DesenhaCubo(float x_init, float y_init){
+    x_init = x_init + x_carta / 5;
+    y_init = y_init + y_carta / 4;
+    float x_end = x_init + 3 * x_carta / 5;
+    float y_end = y_init + 2 * y_carta / 4;
+
+    glColor3f(0, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(x_init, y_init, -0.01);
+    glVertex3f(x_end, y_init, -0.01);
+    glVertex3f(x_end, y_end, -0.01);
+    glVertex3f(x_init, y_end, -0.01);
+    glEnd();
+}
+
+void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init){
+    x_init = x_init + x_carta / 5;
+    y_init = y_init + y_carta / 4;
+    float x_end = x_init + 3 * x_carta / 5;
+    float y_end = y_init + 2 * y_carta / 4;
+
+    glColor3f(1, 0, 0);
+    glBegin(GL_POLYGON);
+    glVertex3f(x_end / 2 + x_init / 2, y_init, -0.01);
+    glVertex3f(x_end, y_end, -0.01);
+    glVertex3f(x_init, y_end, -0.01);
+    glEnd();
+}
+
+void JogoDaMemoria::desenhaBackground(){
+    glColor3f(0.7, 0.7, 0.7);
+    glBindTexture(GL_TEXTURE_2D, _backgroundTexture);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(-2, -2, -0.5);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(-2, 2, -0.5);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(2, 2, -0.5);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(2, -2, -0.5);
+    glEnd();
+}
+
+void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta){
+    if (girar && selecionado)
+    {
+        glPushMatrix();
+        ang += 1;
+        up += 0.94 / 180;
+        escala += ang <= 90 ? (float)1 / 90 : (float)-1 / 90;
+        float y_up = y_init > 0 ? -up : up;
+        glRotatef(y_init > 0 ? ang : -ang, 1, 0, 0);
+        glTranslatef(0, y_up, 0);
+        glScalef(escala, escala, 1);
+        timer->start(5);
+    }
+    else if (carta.escolhida || carta.id == cartaE)
+    {
+        glRotatef(-180, 1, 0, 0);
+        y_init += y_init > 0 ? -0.94 : 0.94;
+    }
+    glColor3f(0.7, 0.7, 0.7);
+    glBindTexture(GL_TEXTURE_2D, _fundoTexture);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x_init, y_init, 0.004);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x_carta + x_init, y_init, 0.004);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x_carta + x_init, y_carta + y_init, 0.004);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x_init, y_carta + y_init, 0.004);
+    glEnd();
+    glColor3f(0.7, 0.7, 0.7);
+    glBindTexture(GL_TEXTURE_2D, _frenteTexture);
+    glBegin(GL_QUADS);
+    glTexCoord2f(0.0f, 1.0f);
+    glVertex3f(x_init, y_init, 0);
+    glTexCoord2f(1.0f, 1.0f);
+    glVertex3f(x_carta + x_init, y_init, 0);
+    glTexCoord2f(1.0f, 0.0f);
+    glVertex3f(x_carta + x_init, y_carta + y_init, 0);
+    glTexCoord2f(0.0f, 0.0f);
+    glVertex3f(x_init, y_carta + y_init, 0);
+    glEnd();
+    if (carta.figura == 0)
+    {
+        DesenhaCubo(x_init, y_init);
+    }
+    else if (carta.figura == 1)
+    {
+        DesenhaTriangulo(x_init, y_init);
+    }
+    else if (carta.figura == 2)
+    {
+        DesenhaIgual(x_init, y_init);
+    }
+    else if (carta.figura == 3)
+    {
+        DesenhaLosangulo(x_init, y_init);
+    }
+
+    if (carta.escolhida)
+    {
+        glColor3f(0, 1, 0);
+    }
+    else if (carta.id == cartaE || (cartaE > -1 && girar && selecionado))
+    {
+        glColor3f(1, 0, 0);
+    }
+    else
+    {
+        glColor3f(0.0f, 0.0f, 0.0f); 
+    }
+    if (selecionado)
+    {
+        glColor3f(0.0f, 0.0f, 0.0f); 
+    }
+    glLineWidth(3.0f);
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(x_init, y_init, 0.004);
+    glVertex3f(x_carta + x_init, y_init, 0.004);
+    glVertex3f(x_carta + x_init, y_carta + y_init, 0.004);
+    glVertex3f(x_init, y_carta + y_init, 0.004);
+    glEnd();
+    glBegin(GL_LINE_LOOP);
+    glVertex3f(x_init, y_init, 0);
+    glVertex3f(x_carta + x_init, y_init, 0);
+    glVertex3f(x_carta + x_init, y_carta + y_init, 0);
+    glVertex3f(x_init, y_carta + y_init, 0);
+    glEnd();
+    if (girar && selecionado)
+    {
+        glPopMatrix();
+        if (ang == 180)
+        {
+            up = 0;
+            ang = 0;
+            timer->stop();
+            girar = false;
+        }
+    }
+    else if (carta.escolhida || carta.id == cartaE)
+    {
+        glRotatef(180, 1, 0, 0);
+    }
+}
+
+void JogoDaMemoria::paintGL(){
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glMatrixMode(GL_MODELVIEW);
+    desenhaBackground();
+    for (int i = 0; i < 8; i++)
+    {
+        DesenhaCarta(i == cartaSelecionada, -0.7 + 0.38 * (i % 4), i < 4 ? 0.8 : -0.14, cartas[i]);
+    }
+}

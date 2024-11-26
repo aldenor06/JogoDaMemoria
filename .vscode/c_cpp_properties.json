@@ -7,7 +7,11 @@
                 "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
                 "/usr/include/x86_64-linux-gnu/qt5/QtCore",
                 "/usr/include/x86_64-linux-gnu/qt5/QtOpenGL",
-                "/usr/include/x86_64-linux-gnu/qt5"
+                "/usr/include/x86_64-linux-gnu/qt5",
+                "/usr/include/qt/QtCore",
+                "/usr/include/qt/QtWidgets",
+                "/usr/include/qt",
+                "/usr/include/qt/QtOpenGL"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

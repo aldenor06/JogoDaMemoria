@@ -29,6 +29,10 @@ public:
     GLfloat y_carta = -0.66;
     GLfloat win = 1;
     GLint view_w, view_h;
+protected:
+void initializeGL();
+void resizeGL(int width, int height);
+
 private:
     QTimer *timer;
     QTimer *timerReset;

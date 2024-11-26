@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "Linux",
+            "name": "linux-gcc-x64",
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/x86_64-linux-gnu/qt5/QtWidgets",
@@ -11,7 +11,8 @@
                 "/usr/include/qt/QtCore",
                 "/usr/include/qt/QtWidgets",
                 "/usr/include/qt",
-                "/usr/include/qt/QtOpenGL"
+                "/usr/include/qt/QtOpenGL",
+                "/usr/include/x86_64-linux-gnu/qt5/QtGui"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

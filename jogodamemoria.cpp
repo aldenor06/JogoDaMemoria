@@ -19,5 +19,4 @@ JogoDaMemoria::JogoDaMemoria()
     jogavel = true;
 }
 
-// Empty destructor
 JogoDaMemoria::~JogoDaMemoria() {}

@@ -32,6 +32,7 @@ public:
 protected:
     void initializeGL();
     void resizeGL(int width, int height);
+    void exibeTexto();
     void DesenhaIgual(float x_init, float y_init);
     void DesenhaLosangulo(float x_init, float y_init);
     void DesenhaCubo(float x_init, float y_init);

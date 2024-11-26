@@ -8,8 +8,8 @@
 GLint cartaSelecionada = 6;
 carta cartas[8];
 int contAcertos = 0;
-int cartaA = -1; 
-int cartaB = -1; 
+int cartaA = -1;
+int cartaB = -1;
 int cartaE = -1;
 GLfloat aspecto, up = 0, escala = 1;
 GLint largura, altura, ang = 0;
@@ -32,7 +32,8 @@ JogoDaMemoria::JogoDaMemoria()
 
 JogoDaMemoria::~JogoDaMemoria() {}
 
-void JogoDaMemoria::initializeGL() {
+void JogoDaMemoria::initializeGL()
+{
     view_w = 800;
     view_h = 600;
     glShadeModel(GL_SMOOTH); // Enable smooth shading
@@ -81,20 +82,23 @@ void JogoDaMemoria::initializeGL() {
     glEnable(GL_DEPTH_TEST);
 }
 
-void JogoDaMemoria::resizeGL(int width, int height){
-    if (height == 0) height = 1;
+void JogoDaMemoria::resizeGL(int width, int height)
+{
+    if (height == 0)
+        height = 1;
     view_w = width;
     view_h = height;
-    glViewport(0, 0, view_w, view_h); 
+    glViewport(0, 0, view_w, view_h);
     glMatrixMode(GL_PROJECTION);
-    glLoadIdentity(); 
+    glLoadIdentity();
     gluPerspective(8.f, static_cast<GLfloat>(width) / height, 5.f, 250.0f);
     gluLookAt(0.f, -0.5f, 15.f, 0, 0, 0, 0, 1, 0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
 
-void JogoDaMemoria::exibeTexto(){
+void JogoDaMemoria::exibeTexto()
+{
     label->setFrameStyle((QFrame::Panel | QFrame::Sunken));
     label->setAutoFillBackground(true);
     label->setAlignment((Qt::AlignCenter));
@@ -109,7 +113,8 @@ void JogoDaMemoria::exibeTexto(){
     close();
 }
 
-void JogoDaMemoria::DesenhaIgual(float x_init, float y_init){
+void JogoDaMemoria::DesenhaIgual(float x_init, float y_init)
+{
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
     float x_end = x_init + 3 * x_carta / 5;
@@ -129,7 +134,8 @@ void JogoDaMemoria::DesenhaIgual(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init){
+void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init)
+{
 
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
@@ -145,7 +151,8 @@ void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::DesenhaCubo(float x_init, float y_init){
+void JogoDaMemoria::DesenhaCubo(float x_init, float y_init)
+{
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
     float x_end = x_init + 3 * x_carta / 5;
@@ -160,7 +167,8 @@ void JogoDaMemoria::DesenhaCubo(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init){
+void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init)
+{
     x_init = x_init + x_carta / 5;
     y_init = y_init + y_carta / 4;
     float x_end = x_init + 3 * x_carta / 5;
@@ -174,7 +182,8 @@ void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init){
     glEnd();
 }
 
-void JogoDaMemoria::desenhaBackground(){
+void JogoDaMemoria::desenhaBackground()
+{
     glColor3f(0.7, 0.7, 0.7);
     glBindTexture(GL_TEXTURE_2D, _backgroundTexture);
     glBegin(GL_QUADS);
@@ -189,7 +198,8 @@ void JogoDaMemoria::desenhaBackground(){
     glEnd();
 }
 
-void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta){
+void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta)
+{
     if (girar && selecionado)
     {
         glPushMatrix();
@@ -258,11 +268,11 @@ void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, c
     }
     else
     {
-        glColor3f(0.0f, 0.0f, 0.0f); 
+        glColor3f(0.0f, 0.0f, 0.0f);
     }
     if (selecionado)
     {
-        glColor3f(0.0f, 0.0f, 0.0f); 
+        glColor3f(0.0f, 0.0f, 0.0f);
     }
     glLineWidth(3.0f);
     glBegin(GL_LINE_LOOP);
@@ -294,7 +304,8 @@ void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, c
     }
 }
 
-void JogoDaMemoria::paintGL(){
+void JogoDaMemoria::paintGL()
+{
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glMatrixMode(GL_MODELVIEW);
     desenhaBackground();
@@ -304,31 +315,31 @@ void JogoDaMemoria::paintGL(){
     }
 }
 
-void resetarCarta(int indiceCarta){
-    
+void resetarCarta(int indiceCarta)
+{
+
     cartas[indiceCarta].escolhida = false;
-    cartas[indiceCarta].id = false;     
-    
+    cartas[indiceCarta].id = false;
 }
 
-void comparaCarta(){
-    if (cartaA >= 0 && cartaB >= 0) 
+void comparaCarta()
+{
+    if (cartaA >= 0 && cartaB >= 0)
     {
-        
+
         if (cartas[cartaA].figura != cartas[cartaB].figura)
         {
-           
+
             resetarCarta(cartaA);
             resetarCarta(cartaB);
         }
         else
         {
-            
-            contAcertos++;     
-        }     
+
+            contAcertos++;
+        }
         cartaE = cartaA;
         cartaA = -1;
         cartaB = -1;
-        
     }
 }

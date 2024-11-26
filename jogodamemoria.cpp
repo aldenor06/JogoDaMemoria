@@ -82,3 +82,39 @@ void JogoDaMemoria::resizeGL(int width, int height){
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
+
+void JogoDaMemoria::DesenhaIgual(float x_init, float y_init){
+    x_init = x_init + x_carta / 5;
+    y_init = y_init + y_carta / 4;
+    float x_end = x_init + 3 * x_carta / 5;
+    float y_end = y_init + 2 * y_carta / 4;
+
+    glColor3f(0, 0, 0);
+    glBegin(GL_QUADS);
+    glVertex3f(x_init, y_init, -0.01);
+    glVertex3f(x_end, y_init, -0.01);
+    glVertex3f(x_end, y_init + 1.5 * y_carta / 8, -0.01);
+    glVertex3f(x_init, y_init + 1.5 * y_carta / 8, -0.01);
+
+    glVertex3f(x_init, y_init + 2.5 * y_carta / 8, -0.01);
+    glVertex3f(x_end, y_init + 2.5 * y_carta / 8, -0.01);
+    glVertex3f(x_end, y_end, -0.01);
+    glVertex3f(x_init, y_end, -0.01);
+    glEnd();
+}
+
+void JogoDaMemoria::DesenhaLosangulo(float x_init, float y_init){
+
+    x_init = x_init + x_carta / 5;
+    y_init = y_init + y_carta / 4;
+    float x_end = x_init + 3 * x_carta / 5;
+    float y_end = y_init + 2 * y_carta / 4;
+
+    glColor3f(212, 37, 37);
+    glBegin(GL_QUADS);
+    glVertex3f(x_init, (y_init + y_end) / 2, -0.01);
+    glVertex3f((x_init + x_end) / 2, y_init, -0.01);
+    glVertex3f(x_end, (y_init + y_end) / 2, -0.01);
+    glVertex3f((x_init + x_end) / 2, y_end, -0.01);
+    glEnd();
+}

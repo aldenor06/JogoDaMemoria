@@ -30,9 +30,10 @@ public:
     GLfloat win = 1;
     GLint view_w, view_h;
 protected:
-void initializeGL();
-void resizeGL(int width, int height);
-
+    void initializeGL();
+    void resizeGL(int width, int height);
+    void DesenhaIgual(float x_init, float y_init);
+    void DesenhaLosangulo(float x_init, float y_init);
 private:
     QTimer *timer;
     QTimer *timerReset;

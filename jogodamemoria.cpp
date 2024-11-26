@@ -5,6 +5,17 @@
 #include <QTimer>
 #include <QPushButton>
 
+GLint cartaSelecionada = 6;
+carta cartas[8];
+int contAcertos = 0;
+int cartaA = -1; 
+int cartaB = -1; 
+int cartaE = -1;
+GLfloat aspecto, up = 0, escala = 1;
+GLint largura, altura, ang = 0;
+bool girar = false;
+void comparaCarta();
+
 JogoDaMemoria::JogoDaMemoria()
 {
     setWindowTitle("jogo da memória");
@@ -81,6 +92,21 @@ void JogoDaMemoria::resizeGL(int width, int height){
     gluLookAt(0.f, -0.5f, 15.f, 0, 0, 0, 0, 1, 0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+}
+
+void JogoDaMemoria::exibeTexto(){
+    label->setFrameStyle((QFrame::Panel | QFrame::Sunken));
+    label->setAutoFillBackground(true);
+    label->setAlignment((Qt::AlignCenter));
+    label->move(view_w / 4, view_h / 2);
+    label->resize(800, 200);
+    label->setStyleSheet("QLabel { background-color :#37374e; color : blue; font:50px }");
+    label->setText("Parabéns, você ganhou!!");
+    button->setStyleSheet("QPushButton {background-color:#d91a27;font:bold;font-size:13px;}");
+    button->move(260, 150);
+    button->resize(80, 50);
+    label->show();
+    close();
 }
 
 void JogoDaMemoria::DesenhaIgual(float x_init, float y_init){
@@ -275,5 +301,34 @@ void JogoDaMemoria::paintGL(){
     for (int i = 0; i < 8; i++)
     {
         DesenhaCarta(i == cartaSelecionada, -0.7 + 0.38 * (i % 4), i < 4 ? 0.8 : -0.14, cartas[i]);
+    }
+}
+
+void resetarCarta(int indiceCarta){
+    
+    cartas[indiceCarta].escolhida = false;
+    cartas[indiceCarta].id = false;     
+    
+}
+
+void comparaCarta(){
+    if (cartaA >= 0 && cartaB >= 0) 
+    {
+        
+        if (cartas[cartaA].figura != cartas[cartaB].figura)
+        {
+           
+            resetarCarta(cartaA);
+            resetarCarta(cartaB);
+        }
+        else
+        {
+            
+            contAcertos++;     
+        }     
+        cartaE = cartaA;
+        cartaA = -1;
+        cartaB = -1;
+        
     }
 }

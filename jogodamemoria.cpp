@@ -5,6 +5,11 @@
 #include <QLabel>
 #include <QTimer>
 #include <QPushButton>
+#include <QApplication>
+#include <QGuiApplication>
+#include <QProcess>
+#include <QDebug>
+
 
 GLint cartaSelecionada = 6;
 void comparaCarta();
@@ -20,18 +25,44 @@ bool girar = false;
 
 JogoDaMemoria::JogoDaMemoria()
 {
-    setWindowTitle("jogo da memória");
+    // Chama a função para fixar o tamanho da janela
+    fixWindowSize();
+
+    // Faz com que a janela nao possa ser fixada
+    setWindowFlags(windowFlags() & ~Qt::WindowMaximizeButtonHint);
+
+    // Define o título da janela
+    setWindowTitle("Jogo da Memória");
+
+    // Inicializa o QLabel e o QPushButton
     label = new QLabel();
     button = new QPushButton("& Fechar", label);
+
+    // Conecta o botão à ação de fechar o label
     connect(button, SIGNAL(clicked()), label, SLOT(close()));
+
+    // Inicializa os timers
     timerReset = new QTimer(this);
     timerJogar = new QTimer(this);
     timer = new QTimer(this);
+
+    // Configura o timer principal como de disparo único
     timer->setSingleShot(true);
+
+    // Conecta o timer principal ao método updateGL para atualizar a tela
     connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
+
+    // Define o estado inicial do jogo como jogável
     jogavel = true;
+
+    // Inicializa as cartas do jogo
     inicializarCartas();
 }
+void JogoDaMemoria::fixWindowSize() {
+    setFixedSize(800, 600); // Define o tamanho fixo da janela
+}
+
+
 
 JogoDaMemoria::~JogoDaMemoria() {}
 
@@ -216,6 +247,7 @@ void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, c
 
 void JogoDaMemoria::exibeTexto()
 {
+    // Configuração do label
     label->setFrameStyle((QFrame::Panel | QFrame::Sunken));
     label->setAutoFillBackground(true);
     label->setAlignment((Qt::AlignCenter));
@@ -223,12 +255,41 @@ void JogoDaMemoria::exibeTexto()
     label->resize(800, 200);
     label->setStyleSheet("QLabel { background-color :#37374e; color : blue; font:50px }");
     label->setText("Parabéns, você ganhou!!");
+    label->show();
+
+    // Configuração do botão "Fechar"
+    button->setText("Fechar");
     button->setStyleSheet("QPushButton {background-color:#d91a27;font:bold;font-size:13px;}");
     button->move(260, 150);
     button->resize(80, 50);
-    label->show();
-    close();
+    button->show();
+    connect(button, &QPushButton::clicked, this, &QWidget::close);
+
+    // Configuração do botão "Jogar novamente"
+    QPushButton *playAgainButton = new QPushButton("Jogar novamente", this);
+    playAgainButton->setStyleSheet("QPushButton {background-color:#1a73e8;font:bold;font-size:13px;}");
+    playAgainButton->move(360, 150);
+    playAgainButton->resize(120, 50);
+    playAgainButton->show();
+
+    // Conexão para reiniciar o jogo
+    connect(playAgainButton, &QPushButton::clicked, this, [this]() {
+        // Esconde a janela atual antes de sair
+        this->hide();
+
+        // Caminho para o executável
+        QString command = "./JogoDaMemoria";
+
+        // Reinicia o jogo
+        if (!QProcess::startDetached(command)) {
+            qDebug() << "Erro ao reiniciar o jogo.";
+        }
+
+        // Sai da aplicação atual
+        QGuiApplication::quit();
+    });
 }
+
 
 void JogoDaMemoria::DesenhaCubo(float x_init, float y_init)
 {

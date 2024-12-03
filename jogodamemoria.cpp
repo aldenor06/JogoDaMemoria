@@ -316,11 +316,12 @@ void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init)
 
     glColor3f(1, 0, 0);
     glBegin(GL_POLYGON);
-    glVertex3f(x_end / 2 + x_init / 2, y_init, -0.01);
-    glVertex3f(x_end, y_end, -0.01);
-    glVertex3f(x_init, y_end, -0.01);
+    glVertex3f(x_end / 2 + x_init / 2, y_end, -0.01); 
+    glVertex3f(x_end, y_init, -0.01);                
+    glVertex3f(x_init, y_init, -0.01);               
     glEnd();
 }
+
 void JogoDaMemoria::DesenhaIgual(float x_init, float y_init)
 {
     x_init = x_init + x_carta / 5;

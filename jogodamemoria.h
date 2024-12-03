@@ -10,21 +10,25 @@
 #include <QMouseEvent>
 #include <QEvent>
 #include <QSize>
+#define NUM_CARTAS 6  // Ou o número desejado de cartas
+
 
 // Estrutura para representar uma carta do jogo
-struct carta {
+struct carta
+{
     bool escolhida = false;
     int figura = 1;
     int id = 0;
 };
 
 // Classe principal do jogo da memória
-class JogoDaMemoria : public QGLWidget {
+class JogoDaMemoria : public QGLWidget
+{
     Q_OBJECT
 
 public:
     // Construtor e destrutor
-    JogoDaMemoria();
+    explicit JogoDaMemoria(QWidget *parent = nullptr);
     ~JogoDaMemoria();
 
     // Atributos para coordenadas e proporções
@@ -47,6 +51,7 @@ protected:
     // Métodos auxiliares
     void screenToOpenGL(int screenX, int screenY, float &glX, float &glY);
     void DesenhaCarta(bool selecionado, float x_init, float y_init, carta carta);
+    void reiniciarJogo();
     void DesenhaCubo(float x_init, float y_init);
     void DesenhaTriangulo(float x_init, float y_init);
     void DesenhaIgual(float x_init, float y_init);
@@ -57,16 +62,20 @@ protected:
     int getCartaIndex(int x, int y);
 
 private:
-    QTimer *timer;        // Timer para controle de animações
-    QTimer *timerReset;   // Timer para resetar estado
-    QTimer *timerJogar;   // Timer para intervalos de jogadas
-    bool jogavel = true;  // Controle do estado de jogabilidade
+    QTimer *timer;       // Timer para controle de animações
+    QTimer *timerReset;  // Timer para resetar estado
+    QTimer *timerJogar;  // Timer para intervalos de jogadas
+    bool jogavel = true; // Controle do estado de jogabilidade
 
-    QLabel *label;        // Label para exibir texto
-    QPushButton *button;  // Botão para ações no jogo
+    QLabel *label;       // Label para exibir texto
+    QPushButton *button; // Botão para ações no jogo
 
     // Texturas para renderização
     GLuint _fundoTexture, _frenteTexture, _backgroundTexture;
+
+    // Variáveis para controle de reinicializações
+    int contadorReinicializacoes = 0;  // Contador de reinicializações
+    QLabel *contadorLabel;              // Label para exibir o contador de reinicializações
 
     // Método para fixar o tamanho da janela
     void fixWindowSize();

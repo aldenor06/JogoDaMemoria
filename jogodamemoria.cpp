@@ -9,7 +9,9 @@
 #include <QGuiApplication>
 #include <QProcess>
 #include <QDebug>
+#include <QVBoxLayout>
 
+// Definindo no cabeçalho
 
 GLint cartaSelecionada = 6;
 void comparaCarta();
@@ -23,7 +25,7 @@ GLfloat aspecto, up = 0, escala = 1;
 GLint largura, altura, ang = 0;
 bool girar = false;
 
-JogoDaMemoria::JogoDaMemoria()
+JogoDaMemoria::JogoDaMemoria(QWidget *parent) : QGLWidget(parent)
 {
     // Chama a função para fixar o tamanho da janela
     fixWindowSize();
@@ -39,7 +41,7 @@ JogoDaMemoria::JogoDaMemoria()
     button = new QPushButton("& Fechar", label);
 
     // Conecta o botão à ação de fechar o label
-    connect(button, SIGNAL(clicked()), label, SLOT(close()));
+    connect(button, &QPushButton::clicked, label, &QLabel::close);
 
     // Inicializa os timers
     timerReset = new QTimer(this);
@@ -50,19 +52,20 @@ JogoDaMemoria::JogoDaMemoria()
     timer->setSingleShot(true);
 
     // Conecta o timer principal ao método updateGL para atualizar a tela
-    connect(timer, SIGNAL(timeout()), this, SLOT(updateGL()));
+    connect(timer, &QTimer::timeout, this, &JogoDaMemoria::updateGL);
 
     // Define o estado inicial do jogo como jogável
     jogavel = true;
 
     // Inicializa as cartas do jogo
     inicializarCartas();
+    this->resize(800, 600);
 }
-void JogoDaMemoria::fixWindowSize() {
+
+void JogoDaMemoria::fixWindowSize()
+{
     setFixedSize(800, 600); // Define o tamanho fixo da janela
 }
-
-
 
 JogoDaMemoria::~JogoDaMemoria() {}
 
@@ -247,49 +250,47 @@ void JogoDaMemoria::DesenhaCarta(bool selecionado, float x_init, float y_init, c
 
 void JogoDaMemoria::exibeTexto()
 {
-    // Configuração do label
-    label->setFrameStyle((QFrame::Panel | QFrame::Sunken));
-    label->setAutoFillBackground(true);
-    label->setAlignment((Qt::AlignCenter));
-    label->move(view_w / 4, view_h / 2);
-    label->resize(800, 200);
-    label->setStyleSheet("QLabel { background-color :#37374e; color : blue; font:50px }");
-    label->setText("Parabéns, você ganhou!!");
-    label->show();
+    // Janela de fim de jogo
+    QWidget *endGameWidget = new QWidget();
+    endGameWidget->setWindowTitle("Fim de Jogo");
 
-    // Configuração do botão "Fechar"
-    button->setText("Fechar");
-    button->setStyleSheet("QPushButton {background-color:#d91a27;font:bold;font-size:13px;}");
-    button->move(260, 150);
-    button->resize(80, 50);
-    button->show();
-    connect(button, &QPushButton::clicked, this, &QWidget::close);
+    // Layout vertical
+    QVBoxLayout *mainLayout = new QVBoxLayout(endGameWidget);
 
-    // Configuração do botão "Jogar novamente"
-    QPushButton *playAgainButton = new QPushButton("Jogar novamente", this);
-    playAgainButton->setStyleSheet("QPushButton {background-color:#1a73e8;font:bold;font-size:13px;}");
-    playAgainButton->move(360, 150);
-    playAgainButton->resize(120, 50);
-    playAgainButton->show();
+    // Label de mensagem
+    QLabel *label = new QLabel("Parabéns, você ganhou!!", endGameWidget);
+    label->setAlignment(Qt::AlignCenter);
+    label->setStyleSheet("QLabel { background-color: #37374e; color: blue; font-size: 30px; }");
+    mainLayout->addWidget(label);
 
-    // Conexão para reiniciar o jogo
-    connect(playAgainButton, &QPushButton::clicked, this, [this]() {
-        // Esconde a janela atual antes de sair
-        this->hide();
+    // Botão "Fechar"
+    QPushButton *closeButton = new QPushButton("Fechar", endGameWidget);
+    closeButton->setStyleSheet("QPushButton { background-color: #d91a27; font-size: 13px; }");
+    connect(closeButton, &QPushButton::clicked, endGameWidget, &QWidget::close);
+    mainLayout->addWidget(closeButton);
 
-        // Caminho para o executável
+    // Botão "Jogar novamente"
+    QPushButton *playAgainButton = new QPushButton("Jogar novamente", endGameWidget);
+    playAgainButton->setStyleSheet("QPushButton { background-color: #1a73e8; font-size: 13px; }");
+    connect(playAgainButton, &QPushButton::clicked, this, [endGameWidget]()
+            {
         QString command = "./JogoDaMemoria";
 
-        // Reinicia o jogo
-        if (!QProcess::startDetached(command)) {
+        // Tenta iniciar o novo jogo e verifica o resultado
+        if (QProcess::startDetached(command)) {
+            qDebug() << "Novo jogo iniciado.";
+        } else {
             qDebug() << "Erro ao reiniciar o jogo.";
         }
 
-        // Sai da aplicação atual
-        QGuiApplication::quit();
-    });
-}
+        // Encerra o processo atual
+        QGuiApplication::quit(); });
+    mainLayout->addWidget(playAgainButton);
 
+    // Exibir a janela
+    endGameWidget->resize(400, 200);
+    endGameWidget->show();
+}
 
 void JogoDaMemoria::DesenhaCubo(float x_init, float y_init)
 {
@@ -316,9 +317,9 @@ void JogoDaMemoria::DesenhaTriangulo(float x_init, float y_init)
 
     glColor3f(1, 0, 0);
     glBegin(GL_POLYGON);
-    glVertex3f(x_end / 2 + x_init / 2, y_end, -0.01); 
-    glVertex3f(x_end, y_init, -0.01);                
-    glVertex3f(x_init, y_init, -0.01);               
+    glVertex3f(x_end / 2 + x_init / 2, y_end, -0.01);
+    glVertex3f(x_end, y_init, -0.01);
+    glVertex3f(x_init, y_init, -0.01);
     glEnd();
 }
 
